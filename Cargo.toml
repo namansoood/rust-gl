@@ -1,11 +1,11 @@
 [package]
-name = "rusty-engine"
+name = "rust-gl"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies.sdl2]
-version = "0.37.0"
-features = ["bundled", "static-link"]
+[workspace]
+members = ["crates/triangle", "crates/gui"]
 
 [dependencies]
-gl = "0.10.0"
+triangle = { path = "crates/triangle" }
+gui = { path = "crates/gui" }
