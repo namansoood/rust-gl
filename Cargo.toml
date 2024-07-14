@@ -4,13 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = ["crates/triangle", "crates/gui", "crates/renderer"]
+members = ["crates/triangle", "crates/gui", "crates/renderer", "crates/window", "crates/utils"]
 
 [dependencies]
+gl = "0.10.0"
+sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
 triangle = { path = "crates/triangle" }
 gui = { path = "crates/gui" }
 renderer = { path = "crates/renderer" }
-
-[workspace.dependencies]
-gl = "0.10.0"
-sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
+window = { path = "crates/window" }
