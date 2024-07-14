@@ -1,13 +1,13 @@
 [package]
-name = "triangle"
+name = "renderer"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "triangle"
-path = "src/main.rs"
+name = "renderer"
+path = "src/lib.rs"
+
 
 [dependencies]
 gl = "0.10.0"
 sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
-renderer = { path = "../renderer" }

@@ -78,10 +78,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24"
 
 [[package]]
+name = "renderer"
+version = "0.1.0"
+dependencies = [
+ "gl",
+ "sdl2",
+]
+
+[[package]]
 name = "rust-gl"
 version = "0.1.0"
 dependencies = [
  "gui",
+ "renderer",
  "triangle",
 ]
 
@@ -114,6 +123,7 @@ name = "triangle"
 version = "0.1.0"
 dependencies = [
  "gl",
+ "renderer",
  "sdl2",
 ]
 

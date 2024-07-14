@@ -1,7 +1,7 @@
 extern crate gl;
 extern crate sdl2;
 
-pub mod render_gl;
+use renderer::structs::{Program, Shader};
 
 static UW: u32 = 1366;
 static UH: u32 = 768;
@@ -39,17 +39,15 @@ pub fn main() {
 
     use std::ffi::CString;
 
-    let vert_shader = render_gl::Shader::from_vert_source(
-        &CString::new(include_str!("shaders/triangle.vert")).unwrap(),
-    )
-    .unwrap();
+    let vert_shader =
+        Shader::from_vert_source(&CString::new(include_str!("shaders/triangle.vert")).unwrap())
+            .unwrap();
 
-    let frag_shader = render_gl::Shader::from_frag_source(
-        &CString::new(include_str!("shaders/triangle.frag")).unwrap(),
-    )
-    .unwrap();
+    let frag_shader =
+        Shader::from_frag_source(&CString::new(include_str!("shaders/triangle.frag")).unwrap())
+            .unwrap();
 
-    let shader_program = render_gl::Program::from_shaders(&[vert_shader, frag_shader]).unwrap();
+    let shader_program = Program::from_shaders(&[vert_shader, frag_shader]).unwrap();
 
     let vertices: Vec<f32> = vec![
         // positions      // colors
