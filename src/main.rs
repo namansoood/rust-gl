@@ -87,6 +87,11 @@ pub fn main() {
         ui.text("Hello World?!");
 
         unsafe {
+            gl::ClearColor(0.2, 0.2, 0.2, 1.0);
+            gl::Clear(gl::COLOR_BUFFER_BIT);
+        }
+
+        unsafe {
             gl::UseProgram(draw_triangle.shader_program.id());
             gl::BindVertexArray(draw_triangle.vao);
             gl::DrawArrays(gl::TRIANGLES, 0, 3);
