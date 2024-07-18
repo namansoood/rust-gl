@@ -1,5 +1,10 @@
 extern crate gl;
+extern crate imgui;
+extern crate imgui_opengl_renderer;
+extern crate imgui_sdl2;
 extern crate sdl2;
+
+use std::env;
 
 static UW: u32 = 1366;
 static UH: u32 = 768;
@@ -8,7 +13,10 @@ static IW: i32 = UW as i32;
 static IH: i32 = UH as i32;
 
 pub fn main() {
-    let (sdl, window, gl_context, mut event_pump) = window::init("Rusty Engine", UW, UH);
+    env::set_var("RUST_BACKTRACE", "1");
+
+    let (sdl, window, gl_context, mut imgui, mut imgui_sdl2, renderer, mut event_pump) =
+        window::init("Rusty Engine", UW, UH);
 
     unsafe {
         gl::Viewport(0, 0, IW, IH);
@@ -62,17 +70,30 @@ pub fn main() {
 
     'main: loop {
         for event in event_pump.poll_iter() {
+            imgui_sdl2.handle_event(&mut imgui, &event);
+            if imgui_sdl2.ignore_event(&event) {
+                continue;
+            }
+
             match event {
                 sdl2::event::Event::Quit { .. } => break 'main,
                 _ => {}
             }
         }
 
+        imgui_sdl2.prepare_frame(imgui.io_mut(), &window, &event_pump.mouse_state());
+
+        let ui = imgui.frame();
+        ui.text("Hello World?!");
+
         unsafe {
             gl::UseProgram(draw_triangle.shader_program.id());
             gl::BindVertexArray(draw_triangle.vao);
             gl::DrawArrays(gl::TRIANGLES, 0, 3);
         }
+
+        imgui_sdl2.prepare_render(&ui, &window);
+        renderer.render(&mut imgui);
 
         window.gl_swap_window();
     }

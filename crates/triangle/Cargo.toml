@@ -9,6 +9,6 @@ path = "src/triangle.rs"
 
 [dependencies]
 gl = "0.10.0"
-sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
+sdl2 = { version = "0.34.0", features = ["bundled", "static-link"] }
 renderer = { path = "../renderer" }
 utils = { path = "../utils" }

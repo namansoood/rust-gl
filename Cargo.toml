@@ -4,12 +4,24 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = ["crates/triangle", "crates/gui", "crates/renderer", "crates/window", "crates/utils"]
+members = [
+    "crates/triangle",
+    "crates/gui",
+    "crates/renderer",
+    "crates/window",
+    "crates/utils",
+]
 
 [dependencies]
 gl = "0.10.0"
-sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
+imgui = ">=0.8.0, <0.12.0"
+imgui-sdl2 = "0.15.3"
+sdl2 = { version = "0.34.0", features = ["bundled", "static-link"] }
+imgui-opengl-renderer = "0.12.1"
+
 triangle = { path = "crates/triangle" }
 gui = { path = "crates/gui" }
 renderer = { path = "crates/renderer" }
 window = { path = "crates/window" }
+
+[dev-dependencies]
