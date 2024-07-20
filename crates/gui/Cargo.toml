@@ -5,4 +5,11 @@ edition = "2021"
 
 [lib]
 name = "gui"
-path = "src/main.rs"
+path = "src/lib.rs"
+
+[dependencies]
+gl = "0.10.0"
+imgui = ">=0.8.0, <0.12.0"
+imgui-sdl2 = "0.15.3"
+sdl2 = { version = "0.34.0", features = ["bundled", "static-link"] }
+imgui-opengl-renderer = "0.12.1"

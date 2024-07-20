@@ -5,7 +5,7 @@ edition = "2021"
 
 [lib]
 name = "window"
-path = "src/init.rs"
+path = "src/lib.rs"
 
 [dependencies]
 gl = "0.10.0"

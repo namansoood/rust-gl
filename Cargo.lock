@@ -152,6 +152,13 @@ dependencies = [
 [[package]]
 name = "gui"
 version = "0.1.0"
+dependencies = [
+ "gl",
+ "imgui",
+ "imgui-opengl-renderer",
+ "imgui-sdl2",
+ "sdl2",
+]
 
 [[package]]
 name = "imgui"

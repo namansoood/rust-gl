@@ -1,12 +1,7 @@
-extern crate imgui;
-extern crate imgui_opengl_renderer;
-extern crate imgui_sdl2;
-
 use gl;
-use imgui_sdl2::ImguiSdl2;
-use sdl2::video::{GLProfile, Window};
-use sdl2::EventPump;
+use sdl2::video::{self, GLProfile, Window};
 use sdl2::Sdl;
+use sdl2::{EventPump, VideoSubsystem};
 
 pub fn init(
     title: &str,
@@ -15,10 +10,8 @@ pub fn init(
 ) -> (
     Sdl,
     Window,
+    VideoSubsystem,
     sdl2::video::GLContext,
-    imgui::Context,
-    ImguiSdl2,
-    imgui_opengl_renderer::Renderer,
     EventPump,
 ) {
     let sdl_context = sdl2::init().unwrap();
@@ -40,22 +33,5 @@ pub fn init(
 
     let event_pump = sdl_context.event_pump().unwrap();
 
-    let mut imgui = imgui::Context::create();
-    imgui.set_ini_filename(None);
-
-    let mut imgui_sdl2 = imgui_sdl2::ImguiSdl2::new(&mut imgui, &window);
-
-    let renderer = imgui_opengl_renderer::Renderer::new(&mut imgui, |s| {
-        video_subsystem.gl_get_proc_address(s) as _
-    });
-
-    (
-        sdl_context,
-        window,
-        gl_context,
-        imgui,
-        imgui_sdl2,
-        renderer,
-        event_pump,
-    )
+    (sdl_context, window, video_subsystem, gl_context, event_pump)
 }

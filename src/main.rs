@@ -15,57 +15,26 @@ static IH: i32 = UH as i32;
 pub fn main() {
     env::set_var("RUST_BACKTRACE", "1");
 
-    let (sdl, window, gl_context, mut imgui, mut imgui_sdl2, renderer, mut event_pump) =
+    let (sdl, window, video_subsystem, gl_context, mut event_pump) =
         window::init("Rusty Engine", UW, UH);
+
+    let (mut imgui, mut imgui_sdl2, imgui_renderer) = gui::make(&window, video_subsystem);
+
+    let r1: &mut f32 = &mut 1.0;
+    let g1: &mut f32 = &mut 0.0;
+    let b1: &mut f32 = &mut 0.0;
+
+    let r2: &mut f32 = &mut 0.0;
+    let g2: &mut f32 = &mut 1.0;
+    let b2: &mut f32 = &mut 0.0;
+
+    let r3: &mut f32 = &mut 0.0;
+    let g3: &mut f32 = &mut 0.0;
+    let b3: &mut f32 = &mut 1.0;
 
     unsafe {
         gl::Viewport(0, 0, IW, IH);
         gl::ClearColor(0.3, 0.3, 0.5, 1.0);
-    }
-
-    let draw_triangle = triangle::make(
-        vec![0.5, -0.5, 0.0, -0.5, -0.5, 0.0, 0.0, 0.5, 0.0],
-        vec![1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
-    );
-
-    unsafe {
-        gl::BindBuffer(gl::ARRAY_BUFFER, draw_triangle.vbo);
-        gl::BufferData(
-            gl::ARRAY_BUFFER,
-            (draw_triangle.vertices.len() * std::mem::size_of::<f32>()) as gl::types::GLsizeiptr,
-            draw_triangle.vertices.as_ptr() as *const gl::types::GLvoid,
-            gl::STATIC_DRAW,
-        );
-        gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-    }
-
-    unsafe {
-        gl::BindVertexArray(draw_triangle.vao);
-
-        gl::BindBuffer(gl::ARRAY_BUFFER, draw_triangle.vbo);
-
-        gl::EnableVertexAttribArray(0);
-        gl::VertexAttribPointer(
-            0,
-            3,
-            gl::FLOAT,
-            gl::FALSE,
-            (6 * std::mem::size_of::<f32>()) as gl::types::GLint,
-            std::ptr::null(),
-        );
-
-        gl::EnableVertexAttribArray(1);
-        gl::VertexAttribPointer(
-            1,
-            3,
-            gl::FLOAT,
-            gl::FALSE,
-            (6 * std::mem::size_of::<f32>()) as gl::types::GLint,
-            (3 * std::mem::size_of::<f32>()) as *const gl::types::GLvoid,
-        );
-
-        gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-        gl::BindVertexArray(0);
     }
 
     'main: loop {
@@ -84,21 +53,27 @@ pub fn main() {
         imgui_sdl2.prepare_frame(imgui.io_mut(), &window, &event_pump.mouse_state());
 
         let ui = imgui.frame();
-        ui.text("Hello World?!");
+        ui.slider("R1", 0.0, 1.0, r1);
+        ui.slider("G1", 0.0, 1.0, g1);
+        ui.slider("B1", 0.0, 1.0, b1);
+        ui.separator();
+        ui.slider("R2", 0.0, 1.0, r2);
+        ui.slider("G2", 0.0, 1.0, g2);
+        ui.slider("B2", 0.0, 1.0, b2);
+        ui.separator();
+        ui.slider("R3", 0.0, 1.0, r3);
+        ui.slider("G3", 0.0, 1.0, g3);
+        ui.slider("B3", 0.0, 1.0, b3);
 
-        unsafe {
-            gl::ClearColor(0.2, 0.2, 0.2, 1.0);
-            gl::Clear(gl::COLOR_BUFFER_BIT);
-        }
+        let draw_triangle = triangle::make(
+            vec![0.5, -0.5, 0.0, -0.5, -0.5, 0.0, 0.0, 0.5, 0.0],
+            vec![*r1, *g1, *b1, *r2, *g2, *b2, *r3, *g3, *b3],
+        );
 
-        unsafe {
-            gl::UseProgram(draw_triangle.shader_program.id());
-            gl::BindVertexArray(draw_triangle.vao);
-            gl::DrawArrays(gl::TRIANGLES, 0, 3);
-        }
+        draw_triangle.draw();
 
         imgui_sdl2.prepare_render(&ui, &window);
-        renderer.render(&mut imgui);
+        imgui_renderer.render(&mut imgui);
 
         window.gl_swap_window();
     }
