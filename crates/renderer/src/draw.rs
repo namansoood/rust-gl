@@ -57,11 +57,6 @@ impl Draw {
         }
 
         unsafe {
-            gl::ClearColor(0.0, 0.0, 0.0, 1.0);
-            gl::Clear(gl::COLOR_BUFFER_BIT);
-        }
-
-        unsafe {
             gl::UseProgram(self.shader_program.id());
             gl::BindVertexArray(self.vao);
             gl::DrawArrays(gl::TRIANGLES, 0, 3);

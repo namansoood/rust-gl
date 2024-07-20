@@ -34,7 +34,6 @@ pub fn main() {
 
     unsafe {
         gl::Viewport(0, 0, IW, IH);
-        gl::ClearColor(0.3, 0.3, 0.5, 1.0);
     }
 
     'main: loop {
@@ -69,6 +68,11 @@ pub fn main() {
             vec![0.5, -0.5, 0.0, -0.5, -0.5, 0.0, 0.0, 0.5, 0.0],
             vec![*r1, *g1, *b1, *r2, *g2, *b2, *r3, *g3, *b3],
         );
+
+        unsafe {
+            gl::ClearColor(0.0, 0.0, 0.0, 1.0);
+            gl::Clear(gl::COLOR_BUFFER_BIT);
+        }
 
         draw_triangle.draw();
 
